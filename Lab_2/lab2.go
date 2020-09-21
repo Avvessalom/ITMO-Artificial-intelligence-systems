@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	"github.com/gammazero/deque"
 	"log"
 	"os"
@@ -39,9 +38,9 @@ func parseTable(name string) []bone {
 	return table
 }
 
-func bfs(table []bone, startName string, endName string) bool {
+func bfs(table []bone, startName string, endName string) string {
 	queue := createQueue(table, startName)
-	var path string = "Кратчайший найденный путь: " + startName + " "
+	var path string = "кратчайший путь: " + startName + " "
 	for queue.Len() != 0 {
 		currentCity := queue.PopFront()
 		switch v := currentCity.(type) {
@@ -50,9 +49,7 @@ func bfs(table []bone, startName string, endName string) bool {
 		}
 
 		if currentCity == endName {
-			fmt.Print("Заебумба")
-			fmt.Print(path)
-			return true
+			return path
 		} else {
 			newQueue := createQueue(table, currentCity)
 			for newQueue.Len() != 0 {
@@ -60,11 +57,10 @@ func bfs(table []bone, startName string, endName string) bool {
 			}
 		}
 	}
-	fmt.Print("Не заебумба")
-	return false
+	return path
 }
 
-var path = "Кратчайший найденный путь: "
+var path = "кратчайший путь: "
 
 func dfs(graph map[string][]string, start string, end string) bool{
 	path = path + start + " "
@@ -80,12 +76,15 @@ func dfs(graph map[string][]string, start string, end string) bool{
 		if !strings.Contains(visited, graph[start][i]) {
 			reached := dfs(graph, graph[start][i], end)
 			if reached {
-				fmt.Println(path)
 				return true
 			}
 		}
 	}
 	return false
+}
+
+func printDfs() string {
+	return path
 }
 
 
