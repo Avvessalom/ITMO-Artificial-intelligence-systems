@@ -64,7 +64,10 @@ func bfs(table []bone, startName string, endName string) bool {
 	return false
 }
 
+var path = "Кратчайший найденный путь: "
+
 func dfs(graph map[string][]string, start string, end string) bool{
+	path = path + start + " "
 	var visited string
 	if start == end {
 		return true
@@ -77,10 +80,10 @@ func dfs(graph map[string][]string, start string, end string) bool{
 		if !strings.Contains(visited, graph[start][i]) {
 			reached := dfs(graph, graph[start][i], end)
 			if reached {
+				fmt.Println(path)
 				return true
 			}
 		}
-		fmt.Println(graph[start][i])
 	}
 	return false
 }
