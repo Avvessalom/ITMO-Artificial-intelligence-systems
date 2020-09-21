@@ -64,16 +64,41 @@ func bfs(table []bone, startName string, endName string) bool {
 	return false
 }
 
-func createMap(table []bone, startName string) map[string][]string {
-	startCity := make(map[string][]string)
-	var a = make([]string, 0, 0)
+func dfs(graph map[string][]string, start string, end string) bool{
+	var visited string
+	if start == end {
+		return true
+	}
+	if strings.Contains(visited, start) {
+		return false
+	}
+	visited = visited + start
+	for i:= 0; i <= len(graph[start]) -1; i++ {
+		if !strings.Contains(visited, graph[start][i]) {
+			reached := dfs(graph, graph[start][i], end)
+			if reached {
+				return true
+			}
+		}
+		fmt.Println(graph[start][i])
+	}
+	return false
+}
+
+
+func createMap(table []bone) map[string][]string {
+	graphMap := make(map[string][]string)
 	for i := 0; i <= len(table) - 1; i++ {
-		if table[i].start == startName {
-			a = append(a, table[i].end)
-			startCity[startName] = a
+		var a = make([]string, 0, 0)
+		graphMap[table[i].start] = a
+		for j := 0; j <= len(table)-1; j++  {
+			if table[j].start == table[i].start {
+				a = append(a, table[j].end)
+				graphMap[table[i].start] = a
+			}
 		}
 	}
-	return startCity
+	return graphMap
 }
 
 func createQueue(table []bone, starName interface{}) deque.Deque {
