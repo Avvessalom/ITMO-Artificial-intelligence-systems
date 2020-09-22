@@ -10,8 +10,8 @@ import (
 )
 
 type bone struct {
-	start string
-	end string
+	start  string
+	end    string
 	weight int
 }
 
@@ -19,7 +19,7 @@ func parseTable(name string) []bone {
 	var table = make([]bone, 0, 0)
 
 	file, err := os.Open(name)
-	if err != nil{
+	if err != nil {
 		panic(err)
 	}
 	defer file.Close()
@@ -32,8 +32,10 @@ func parseTable(name string) []bone {
 			log.Fatal(err)
 		}
 		b := bone{start: str[0], end: str[1], weight: distance}
+		c := bone{start: str[1], end: str[0], weight: distance}
 		var _ []bone
 		table = append(table, b)
+		table = append(table, c)
 	}
 	return table
 }
@@ -45,15 +47,16 @@ func bfs(table []bone, startName string, endName string) string {
 		currentCity := queue.PopFront()
 		switch v := currentCity.(type) {
 		case string:
-			path = path + v + " "
-		}
-
-		if currentCity == endName {
-			return path
-		} else {
-			newQueue := createQueue(table, currentCity)
-			for newQueue.Len() != 0 {
-				queue.PushBack(newQueue.PopFront())
+			if !strings.Contains(path, v) {
+				path = path + v + " "
+				if currentCity == endName {
+					return path
+				} else {
+					newQueue := createQueue(table, currentCity)
+					for newQueue.Len() != 0 {
+						queue.PushBack(newQueue.PopFront())
+					}
+				}
 			}
 		}
 	}
@@ -62,7 +65,7 @@ func bfs(table []bone, startName string, endName string) string {
 
 var path = "кратчайший путь: "
 
-func dfs(graph map[string][]string, start string, end string) bool{
+func dfs(graph map[string][]string, start string, end string) bool {
 	path = path + start + " "
 	var visited string
 	if start == end {
@@ -72,7 +75,7 @@ func dfs(graph map[string][]string, start string, end string) bool{
 		return false
 	}
 	visited = visited + start
-	for i:= 0; i <= len(graph[start]) -1; i++ {
+	for i := 0; i <= len(graph[start])-1; i++ {
 		if !strings.Contains(visited, graph[start][i]) {
 			reached := dfs(graph, graph[start][i], end)
 			if reached {
@@ -87,13 +90,12 @@ func printDfs() string {
 	return path
 }
 
-
 func createMap(table []bone) map[string][]string {
 	graphMap := make(map[string][]string)
-	for i := 0; i <= len(table) - 1; i++ {
+	for i := 0; i <= len(table)-1; i++ {
 		var a = make([]string, 0, 0)
 		graphMap[table[i].start] = a
-		for j := 0; j <= len(table)-1; j++  {
+		for j := 0; j <= len(table)-1; j++ {
 			if table[j].start == table[i].start {
 				a = append(a, table[j].end)
 				graphMap[table[i].start] = a
@@ -105,8 +107,8 @@ func createMap(table []bone) map[string][]string {
 
 func createQueue(table []bone, starName interface{}) deque.Deque {
 	var q deque.Deque
-	for i := 0; i <= len(table) -1; i++ {
-		if table[i].start == starName{
+	for i := 0; i <= len(table)-1; i++ {
+		if table[i].start == starName {
 			q.PushBack(table[i].end)
 		}
 	}
