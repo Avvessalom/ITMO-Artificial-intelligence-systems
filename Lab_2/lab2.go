@@ -64,10 +64,10 @@ func bfs(table []bone, startName string, endName string) string {
 }
 
 var path = "кратчайший путь: "
+var visited string
 
 func dfs(graph map[string][]string, start string, end string) bool {
 	path = path + start + " "
-	var visited string
 	if start == end {
 		return true
 	}
@@ -85,9 +85,30 @@ func dfs(graph map[string][]string, start string, end string) bool {
 	}
 	return false
 }
+var pathDLS = "кратчайший путь: "
+var visitedDLS string
+
+func dls (graph map[string][]string, start string, end string, limit int) bool {
+	pathDLS = pathDLS + start + " "
+	if start == end {return true}
+	if limit >= 0 {
+		if strings.Contains(visitedDLS, start) {return false}
+			visitedDLS = visitedDLS + start
+		for i:=0; i <= len(graph[start])-1; i++ {
+			if !strings.Contains(visitedDLS, graph[start][i]) && strings.Count(pathDLS, " ")-3 <= limit{
+				reached := dls(graph, graph[start][i], end, limit -1)
+				if reached {return true}
+			}
+		}
+	}
+	return false
+}
 
 func printDfs() string {
 	return path
+}
+func printDls() string {
+	return pathDLS
 }
 
 func createMap(table []bone) map[string][]string {
