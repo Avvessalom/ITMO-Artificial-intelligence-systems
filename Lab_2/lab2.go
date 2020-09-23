@@ -168,8 +168,19 @@ func biDirectionalSearch(table []bone, start string, end string) string {
 		}
 	}
 	return pathFront
-
 }
+
+func greedySearch(graph map[string][]bone, start string, end string) string {
+	if start == end {return start}
+	currentCity := graph[start]
+	for _, v := range graph[start]{
+		fmt.Print(v)
+	}
+	fmt.Print(currentCity)
+	return " "
+}
+
+
 
 func printDfs() string {
 	return path
@@ -186,6 +197,21 @@ func createMap(table []bone) map[string][]string {
 		for j := 0; j <= len(table)-1; j++ {
 			if table[j].start == table[i].start {
 				a = append(a, table[j].end)
+				graphMap[table[i].start] = a
+			}
+		}
+	}
+	return graphMap
+}
+
+func createMapWithWeight(table []bone) map[string][]bone {
+	graphMap := make(map[string][]bone)
+	for i := 0; i <= len(table)-1; i++ {
+		var a = make([]bone, 0, 0)
+		graphMap[table[i].start] = a
+		for j := 0; j <= len(table)-1; j++ {
+			if table[j].start == table[i].start {
+				a = append(a, table[j])
 				graphMap[table[i].start] = a
 			}
 		}
