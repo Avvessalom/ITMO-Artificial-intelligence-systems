@@ -125,6 +125,52 @@ func iddfs(graph map[string][]string, start string, end string) bool {
 	return false
 }
 
+func biDirectionalSearch(table []bone, start string, end string) string {
+	visited := ""
+	queueStart := createQueue(table, start)
+	queueEnd := createQueue(table, end)
+	var pathFront string =  start + " "
+	var pathBack string = end + " "
+	for queueStart.Len() != 0 {
+		currentCityFront := queueStart.PopFront()
+		switch v := currentCityFront.(type) {
+		case string:
+			if strings.Contains(visited, v) {return pathFront + pathBack}
+			if !strings.Contains(pathFront, v) {
+				pathFront = pathFront + v + " "
+				visited = visited + v
+				if currentCityFront == end {
+					return pathFront
+				} else {
+					newQueue := createQueue(table, currentCityFront)
+					for newQueue.Len() != 0 {
+						queueStart.PushBack(newQueue.PopFront())
+					}
+				}
+			}
+		}
+		currentCityBack := queueEnd.PopFront()
+		switch v := currentCityBack.(type) {
+		case string:
+			if strings.Contains(visited, v) {return pathFront + pathBack}
+			if !strings.Contains(pathBack, v) {
+				pathBack = v + " " + pathBack
+				visited = visited + v
+			if currentCityBack == start {
+				return pathBack
+			} else {
+					newQueue := createQueue(table, currentCityBack)
+					for newQueue.Len() != 0 {
+						queueEnd.PushBack(newQueue.PopFront())
+					}
+				}
+			}
+		}
+	}
+	return pathFront
+
+}
+
 func printDfs() string {
 	return path
 }

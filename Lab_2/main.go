@@ -11,4 +11,5 @@ func main() {
 	fmt.Println("Поиск в глубину c ограничением глубины дал  ", printDls())
 	iddfs(createMap(table),"Симферополь", "Мурманск")
 	//fmt.Printf("%s",createMap(table))
+	fmt.Println("Двунаправленный поиск дал кратчайший путь: " ,biDirectionalSearch(table,"Симферополь", "Мурманск"))
 }
