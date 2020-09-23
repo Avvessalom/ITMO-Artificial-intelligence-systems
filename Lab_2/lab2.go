@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"github.com/gammazero/deque"
 	"log"
 	"os"
@@ -89,7 +90,10 @@ var pathDLS = "кратчайший путь: "
 var visitedDLS string
 
 func dls (graph map[string][]string, start string, end string, limit int) bool {
-	pathDLS = pathDLS + start + " "
+	if strings.Count(pathDLS, start) == 0 {
+		pathDLS = pathDLS + start + " "
+	}
+	var pathDLS = "кратчайший путь: "
 	if start == end {return true}
 	if limit >= 0 {
 		if strings.Contains(visitedDLS, start) {return false}
@@ -99,6 +103,23 @@ func dls (graph map[string][]string, start string, end string, limit int) bool {
 				reached := dls(graph, graph[start][i], end, limit -1)
 				if reached {return true}
 			}
+		}
+	}
+	return false
+}
+
+func iddfs(graph map[string][]string, start string, end string) bool {
+	limit := 0
+	pathDLS = "кратчайший путь: "
+	visitedDLS = " "
+	if dls(graph,start,end,limit) {return true}
+	if start == end {return true}
+	for i := 0; i <= 500; i++ {
+		pathDLS = "кратчайший путь: "
+		visitedDLS = " "
+		if dls(graph,start,end,i) {
+			fmt.Println("Поиск в глубину c итеративным увеличением глубины дал  ",pathDLS, " глубина: ", i)
+			return true
 		}
 	}
 	return false
