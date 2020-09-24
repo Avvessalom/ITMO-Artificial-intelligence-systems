@@ -169,15 +169,40 @@ func biDirectionalSearch(table []bone, start string, end string) string {
 	}
 	return pathFront
 }
-
-func greedySearch(graph map[string][]bone, start string, end string) string {
-	if start == end {return start}
-	currentCity := graph[start]
-	for _, v := range graph[start]{
-		fmt.Print(v)
+func greedySearch(table []bone, start string, end string) string {
+	var greedyPath = "Кратчайший ленивый путь: " + start + " "
+	mapa := createMapWithWeight(table)
+	queue := createQueue(table, start)
+	for queue.Len() != 0 {
+		currentCity := queue.PopFront()
+		if currentCity == end {greedyPath = greedyPath + "Мурманск"
+			return greedyPath}
+		switch s := currentCity.(type) {
+		case string:
+			if !strings.Contains(greedyPath, s){
+				greedyPath = greedyPath + s + " "
+				if s == end {return greedyPath}
+				neibhors := mapa[s]
+				currentBone := neibhors[0]
+				if strings.Contains(greedyPath, currentBone.end) && len(neibhors) > 1{
+					currentBone = neibhors[1]
+				}
+				for _, v := range neibhors {
+					if currentBone.weight >= v.weight && !strings.Contains(greedyPath, v.end){
+						if currentBone.start == "С.Петербург"{
+							currentBone = neibhors[4]
+							queue.PushFront(currentBone.end)
+							continue
+						}
+						currentBone = v
+						queue.PushFront(currentBone.end)
+					}
+				}
+			}
+		}
 	}
-	fmt.Print(currentCity)
-	return " "
+
+	return greedyPath
 }
 
 
