@@ -222,7 +222,6 @@ func aStar(table []bone, start string, end string) string {
 			case priority:
 				if s.name == end {return starPath
 				}
-				fmt.Println(s.name)
 				for _, next := range mapa[s.name]{
 					new_cost := costSoFar[next.end] + next.weight
 					if costSoFar[next.end] == 0 || new_cost < costSoFar[next.end]{
