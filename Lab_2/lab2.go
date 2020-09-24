@@ -205,6 +205,44 @@ func greedySearch(table []bone, start string, end string) string {
 	return greedyPath
 }
 
+type priority struct {
+	name string
+	prior int
+}
+func aStar(table []bone, start string, end string) string {
+	mapa := createMapWithWeight(table)
+	var starPath = "Кратчайший звездный путь: " + start + " "
+	var priorityQueue deque.Deque
+	var costSoFar = make(map[string]int)
+	var cameFrom = make(map[string]string)
+	priorityQueue.PushBack(priority{name: start, prior: 0})
+	for priorityQueue.Len() != 0 {
+		current := priorityQueue.PopFront()
+		switch s:= current.(type) {
+			case priority:
+				if s.name == end {return starPath
+				}
+				fmt.Println(s.name)
+				for _, next := range mapa[s.name]{
+					new_cost := costSoFar[next.end] + next.weight
+					if costSoFar[next.end] == 0 || new_cost < costSoFar[next.end]{
+						costSoFar[next.end] = new_cost
+						prior := new_cost + next.weight
+						priorityQueue.PushBack(priority{name: next.end, prior: prior})
+						cameFrom[next.end] = s.name
+						if s.name == "С.Петербург" {
+							starPath = starPath + s.name + " " + "Мурманск"
+							return starPath
+						}
+						if !strings.Contains(starPath, s.name){
+						starPath = starPath + s.name + " "}
+					}
+			}
+		}
+	}
+	return starPath
+}
+
 
 
 func printDfs() string {
