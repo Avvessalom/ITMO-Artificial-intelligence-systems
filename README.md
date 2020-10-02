@@ -7,3 +7,4 @@
 
 ### Вариант
 Генеалогическое дерево семьи первых римских императоров
+![lab1](https://github.com/Avvessalom/ITMO-Artificial-intelligence-systems/blob/master/img/L1.png)
